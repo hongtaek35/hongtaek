@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.book.mapper.BookMapper">
+	<resultMap id="book" type="com.book.dto.BookDTO">
+		<id column="ISBN" property="isbn" />
+		<result column="BOOK_TITLE" property="bTitle" />
+		<result column="BOOK_WRITER" property="bWriter" />
+		<result column="BOOK_PUBLISHER" property="bPublisher" />
+		<result column="BOOK_MONEY" property="bMoney" />
+		<result column="BOOK_SELL_COUNT" property="bSellCount" />
+	</resultMap>
+
+	<select id="selectAllBook" resultMap="book"> 
+		select * from book
+	</select>
+
+	<insert id="insertBook" parameterType="book"> 
+		insert into book values(#{isbn}, #{bTitle}, #{bWriter}, #{bPublisher}, #{bMoney}, #{bSellCount})
+	</insert>
+
+	<select id="selectBookByisbn" parameterType="string">
+		select * from book where isbn like #{isbn}
+	</select>
+
+	<update id="updateBook" parameterType="book"> 
+		update book set
+		bTitle = #{bTitle},
+		bWriter = #{bWriter},
+		bPublisher = #{bPublisher},
+		bMoney = #{bMoney},
+		bSellCount = #{bSellCount}
+		where isbn = #{isbn}
+	</update>
+
+	<delete id="deleteBook" parameterType="string"> 
+		delete from book
+		where isbn = #{isbn} 
+	</delete>
+
+	<select id="searchBook" parameterType="hashmap" resultMap="book"> 
+		select * from book 
+		where ${kind} like '%' || #{txt} || '%' 
+	</select>
+<!--	<update id="updateSalary">
+    <![CDATA[ 
+    update employee
+    set salary = ceil(salary * 1.1)
+    where eno in(
+      select * from
+      (select eno from employCaused by: Error : 904, Position : 54, Sql = SELECT *
+
+      where rownum <= 5
+      ]]>
+		)
+	</update>
+	<select id="selectLowEmployee" resultMap="employee">
+    <![CDATA[ 
+    select * from
+    (
+      select * from employee e join position_list p on e.position_no = p.position_no  
+    order by salary asc)
+    where rownum <= 5
+    ]]>
+	</select>
+    -->
+
+</mapper>

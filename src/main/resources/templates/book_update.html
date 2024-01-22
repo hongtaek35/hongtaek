@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>도서 정보 수정 페이지</title>
+  <style>
+    h2{
+      font-size: 24px;
+      text-align: center;
+    }
+    .container{
+      width: 1200px;
+      margin: 0 auto;
+      margin-top: 100px;
+    }
+    form{
+      width: 300px;
+      margin: 0 auto;
+    }
+    label{
+      display: block;
+      margin-top: 10px;
+    } 
+    input, select{
+      width: 100%;
+      height: 50px;
+      margin-top: 10px;
+      box-sizing: border-box;
+    }
+    button{
+      width: 100%;
+      height: 50px;
+      margin-top: 10px;
+      background-color: #000;
+      color: #fff;
+      font-size: 20px;
+      box-sizing: border-box;
+    }
+  </style>
+</head>
+<body>
+	<h2>도서정보 수정 페이지</h2>
+  <form action="/book/update" method="get">
+    <input type="text" name="isbn" readonly th:value="${isbn}">
+    <input type="text" name="bTitle" placeholder="제목" th:value="${bTitle}">
+    <input type="text" name="bWriter" placeholder="저자" th:value="${bWriter}">
+    <input type="text" name="bPublisher" placeholder="출판사" th:value="${bPublisher}">
+    <input type="text" name="bMoney" placeholder="가격" th:value="${bMoney}">
+    <button>도서정보 수정</button>
+  </form>
+</body>
+</html>

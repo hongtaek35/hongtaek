@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.book.mapper.MemberMapper">
+	<resultMap id="member" type="member">
+		<id column="MEMBER_ID" property="mId" />
+		<result column="MEMBER_PASSWD" property="mPasswd" />
+		<result column="MEMBER_NAME" property="mName" />
+		<result column="MEMBER_TEL" property="mTel" />
+		<result column="MEMBER_LISENCE" property="mLisence" />
+	</resultMap>
+
+
+    <select id="login" parameterType="HashMap" resultMap="member"> 
+        SELECT *
+        FROM member
+        WHERE "MEMBER_ID" LIKE #{mId} AND "MEMBER_PASSWD" LIKE #{mPasswd}
+    </select>
+
+
+
+</mapper>

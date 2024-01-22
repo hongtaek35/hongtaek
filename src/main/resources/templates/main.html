@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <style>
+    h1 {
+      text-align: center;
+    }
+
+    table {
+      border-collapse: collapse;
+      width: 1200px;
+      margin: 0 auto;
+    }
+
+    th,
+    td {
+      border: 1px solid #dddddd;
+      text-align: left;
+      padding: 8px;
+      text-align: center;
+    }
+  </style>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+  <script>
+    $(function() {
+      $('.btn_search').click(function() {
+        var kind = $('#kind').val();
+        var search = $('#search').val();
+        $.ajax({
+          url: '/book/search',
+          type: 'get',
+          data: {
+            kind: kind,
+            search: search
+          },
+          success: function(data) {
+            console.log(data);
+            let tag = '';
+            $.each(data, function(i, item) {
+              console.log(item,i);
+              tag += '<tr>';
+              tag += '<td>' + item.isbn + '</td>';
+              tag += '<td>' + item.bTitle + '</td>';
+              tag += '<td>' + item.bWriter + '</td>';
+              tag += '<td>' + item.bPublisher + '</td>';
+              tag += '<td>' + item.bMoney + '</td>';
+              tag += '<td>' + item.bSellCount + '</td>';
+              tag += '<td>';
+              tag += '<a href="/book/update/' + item.isbn + '">수정</a>';
+              tag += '<a href="/book/delete/' + item.isbn + '">삭제</a>';
+              tag += '</td>';
+              tag += '</tr>';
+            });
+            $('tbody').html(tag);
+          }
+        
+        });
+      });
+    });
+  </script>
+  <script th:if="${session.member == null  }" >
+    alert('로그인 실패 하였습니다.\n입력하신 정보를 확인하세요.');
+    location.href='/';
+  </script>
+</head>
+<body th:if="${session.member != null}">
+  <script th:if="${session.member.mLisence == 0}">
+    alert('권한이 없습니다.');
+    location.href='/';
+  </script>
+
+  <h1>도서 정보 관리 페이지</h1>
+  <table>
+    <thead>
+      <tr>
+        <td colspan="7">
+          <form action="/book/insert" method="get">
+            <input type="text" name="isbn" placeholder="ISBN">
+            <input type="text" name="bTitle" placeholder="도서제목">
+            <input type="text" name="bWriter" placeholder="저자">
+            <input type="text" name="bPublisher" placeholder="출판사">
+            <input type="text" name="bMoney" placeholder="정가">
+            <input type="text" name="bSellCount" placeholder="판매권수">
+            <button>도서등록</button>
+          </form>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="7">
+          <select name="kind" id="kind">
+            <option value="bTitle">도서명</option>
+            <option value="bWriter">저자</option>
+            <option value="bPublisher">출판사</option>
+          </select>
+          <input type="text" name="search" id="search">
+          <button type="button" class="btn_search">검색</button>
+        </td>
+      </tr>
+      <tr>
+        <th>ISBN</th>
+        <th>도서제목</th>
+        <th>저자</th>
+        <th>출판사</th>
+        <th>정가</th>
+        <th>판매권수</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr th:each="book : ${list}">
+        <td th:text="${book.isbn}"></td>
+        <td th:text="${book.bTitle}"></td>
+        <td th:text="${book.bWriter}"></td>
+        <td th:text="${book.bPublisher}"></td>
+        <td th:text="${book.bMoney}"></td>
+        <td th:text="${book.bSellCount}"></td>
+        <td>
+          <a th:href="@{/book/update/{isbn}(isbn=${book.isbn})}">수정</a>
+          <a th:href="@{/book/delete/{isbn}(isbn=${book.isbn})}">삭제</a>
+        </td>
+      </tr>
+    </tbody>
+</body>
+
+</html>
